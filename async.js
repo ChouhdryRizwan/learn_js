@@ -17,6 +17,43 @@
 //   }
 // }, 1000);
 
+// async function chalo(){
+//   return 'Hello';
+// }
+
+// chalo().then((message)=>{
+//   console.log(message);
+// })
+
+async function print() {
+  console.log("A");
+  await console.log("B");
+  console.log("C");
+}
+
+// print();
+// console.log("D");
+// console.log("E");
+
+async function getData() {
+  const res = await fetch("https://dummyjson.com/users");
+  const data = await res.json();
+  return data;
+}
+
+// let rec = getData();
+// console.log(rec);
+
+getData()
+  .then((data) => {
+    console.log(data.users[0].firstName);
+
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
+/*
 async function getGit() {
   try {
     const response = await fetch(
@@ -30,3 +67,4 @@ async function getGit() {
 }
 
 getGit();
+*/

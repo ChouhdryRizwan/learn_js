@@ -5,7 +5,7 @@ const d = { 5: "e", 6: "f" };
 // const c = Object.assign({}, a, b, d);
 const c = { ...a, ...b, ...d };
 
-// console.log(c);
+console.log(c);
 
 const stds = {
   namee: "Rizwan",
