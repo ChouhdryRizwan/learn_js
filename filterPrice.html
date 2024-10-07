@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Filter Plants by Price Range</title>
+  <!-- Include noUiSlider CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+    .slider-container {
+      margin: 20px 0;
+    }
+    .plant {
+      margin: 10px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    .noUi-handle {
+      background: #007bff;
+    }
+  </style>
+</head>
+<body>
+  <h1>Filter Plants by Price Range</h1>
+
+  <div class="slider-container">
+    <label>Price Range: </label>
+    <div id="priceSlider"></div>
+    <p>Selected Range: <span id="priceRange">2000 - 5000</span></p>
+  </div>
+
+  <button id="filterButton">Filter Plants</button>
+
+  <h2>Filtered Plants</h2>
+  <div id="filteredPlants"></div>
+
+  <!-- Include noUiSlider JS library -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.js"></script>
+  <script>
+    const plantsData = [
+      { "id": 1, "name": "Lime", "price": "Rs: 2,500" },
+      { "id": 2, "name": "Orange", "price": "Rs: 3,200" },
+      { "id": 3, "name": "Lemon", "price": "Rs: 2,800" },
+      { "id": 4, "name": "Apple", "price": "Rs: 4,200" },
+      { "id": 5, "name": "Grapes", "price": "Rs: 1,500" },
+      { "id": 6, "name": "Mango", "price": "Rs: 5,000" }
+    ];
+
+    // Function to convert price string to number
+    function getPriceValue(priceString) {
+      return parseInt(priceString.replace("Rs: ", "").replace(/,/g, ""), 10);
+    }
+
+    // Initialize the noUiSlider with two handles for min and max price
+    const priceSlider = document.getElementById('priceSlider');
+    noUiSlider.create(priceSlider, {
+      start: [2000, 5000], // Initial range
+      connect: true,
+      range: {
+        'min': 0,
+        'max': 10000
+      },
+      step: 100,
+      format: {
+        to: value => Math.round(value),
+        from: value => value
+      }
+    });
+
+    // Display the selected range values
+    const priceRangeDisplay = document.getElementById('priceRange');
+    priceSlider.noUiSlider.on('update', function(values, handle) {
+      const minPrice = values[0];
+      const maxPrice = values[1];
+      priceRangeDisplay.textContent = `${minPrice} - ${maxPrice}`;
+    });
+
+    // Filter plants based on the selected range when the button is clicked
+    document.getElementById('filterButton').onclick = () => {
+      const [minPrice, maxPrice] = priceSlider.noUiSlider.get().map(Number);
+
+      // Filter plants within the selected range
+      const filteredPlants = plantsData.filter(plant => {
+        const price = getPriceValue(plant.price);
+        return price >= minPrice && price <= maxPrice;
+      });
+
+      // Display the filtered plants
+      const filteredPlantsContainer = document.getElementById('filteredPlants');
+      filteredPlantsContainer.innerHTML = ""; // Clear previous results
+
+      if (filteredPlants.length > 0) {
+        filteredPlants.forEach(plant => {
+          const plantDiv = document.createElement('div');
+          plantDiv.className = 'plant';
+          plantDiv.innerHTML = `<strong>${plant.name}</strong>: ${plant.price}`;
+          filteredPlantsContainer.appendChild(plantDiv);
+        });
+      } else {
+        filteredPlantsContainer.innerHTML = "<p>No plants found in the selected price range.</p>";
+      }
+    };
+  </script>
+</body>
+</html>

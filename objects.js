@@ -3,7 +3,7 @@ const b = { 3: "c", 4: "d" };
 const d = { 5: "e", 6: "f" };
 
 // const c = Object.assign({}, a, b, d);
-const c = { ...a, ...b, ...d };
+const c = { ...a, ...b, ...d, ...['ok','error'] };
 
 console.log(c);
 

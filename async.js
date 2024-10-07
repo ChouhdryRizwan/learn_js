@@ -68,3 +68,14 @@ async function getGit() {
 
 getGit();
 */
+
+
+
+
+setTimeout(() => {
+  console.log("Hello! This message is displayed after 3 seconds.");
+}, 3000);
+
+setInterval(() => {
+  console.log("This message is displayed every 2 seconds.");
+}, 2000);
